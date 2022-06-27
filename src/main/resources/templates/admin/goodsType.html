@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+
+    <table id="table">
+        <tr>
+            <th></th>
+            <th>商品类别</th>
+            <th>商品类别名称</th>
+            <th>操作</th>
+        </tr>
+        <div th:each="goodsType, itemStat : ${goodsTypeList} ">
+            <tr>
+                <td th:text="${itemStat.index + 1}"></td>
+                <td th:text="${goodsType.gtName}"></td>
+                <td><a th:href="@{deleteGType(gtName=${goodsType.gtName})}"
+                       th:text="删除">
+                </a>
+                </td>
+            </tr>
+            </br>
+            <span id="msgt" th:text="${param.msgt}" type="text"></span>
+        </div>
+    </table>
+    <br><br>
+    <h3>添加商品类别</h3></br>
+    <form action="addGType" method="post">
+        <table>
+            商品类别：<input class="text" id="GoodsType" placeholder="请输入商品类别" th:name="gtName" type="text"><br>
+            <input class="button" type="submit" value="添加"/>
+        </table>
+        <span id="msg" th:text="${param.msg}" type="text"></span>
+    </form>
+</div>
+</body>
+</html>

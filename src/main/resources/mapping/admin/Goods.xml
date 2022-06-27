@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo.mapper.admin.GoodsMapper">
+    <!--        查询全部商品-->
+
+    <select id="selectAllGoods" resultType="Goods">
+        select *
+        from shopping.goods_info gi
+                 inner join shopping.goods_type gt
+                            on gt.gtId = gi.gtId
+        limit #{pageNum},#{pageSize}
+    </select>
+
+    <select id="getCount" resultType="java.lang.Long">
+        select count(*) from shopping.goods_info
+    </select>
+
+    <select id="getCountByword" resultType="java.lang.Long">
+        select count(*)
+        from shopping.goods_info gi
+                 inner join shopping.goods_type gt
+                            on gt.gtId = gi.gtId
+        where concat(gName, gtName, gDetails)
+                  Like concat('%', #{word}, '%')
+    </select>
+    <!--       ID查询一个商品-->
+    <select id="selectGoodsById" resultType="Goods">
+        select *
+        from shopping.goods_info
+        where gid = #{gId}
+        limit #{pageNum},#{pageSize}
+    </select>
+
+    <select id="selectGoodsByWord" resultType="Goods">
+        select *
+        from shopping.goods_info gi
+                 inner join shopping.goods_type gt
+                            on gt.gtId = gi.gtId
+        where concat(gName, gtName, gDetails)
+                  Like concat('%', #{word}, '%')
+        limit #{pageNum},#{pageSize}
+    </select>
+    <!--   添加商品-->
+
+    <insert id="addGoods" parameterType="Goods">
+        insert into shopping.goods_info(gId, gName, gPrice_old, gPrice_new, gStore, gPicture, gtId, isShelf, gDetails)
+        VALUES (null, #{gName}, #{gPriceOld}, #{gPriceNew}, #{gStore}, #{gPicture}, #{gtId}, 1, #{gDetails})
+    </insert>
+    <!--    修改商品-->
+    <update id="updateGoods" parameterType="Goods">
+        update shopping.goods_info
+        <set>
+            <if test="gName != null">
+                gName = #{gName},
+            </if>
+            <if test="gPriceOld != 0">
+                gPrice_old = #{gPriceOld},
+            </if>
+            <if test="gPriceNew != 0">
+                gPrice_new = #{gPriceNew},
+            </if>
+            <if test="gStore != null">
+                gStore = #{gStore},
+            </if>
+            <if test="gPicture != null">
+                gPicture = #{gPicture},
+            </if>
+            <if test="gtId != null">
+                gtId = #{gtId},
+            </if>
+
+            <if test="gDetails != null">
+                gDetails = #{gDetails},
+            </if>
+
+        </set>
+        where gId = #{gId}
+    </update>
+    <!--    下架-->
+    <update id="offShelf" parameterType="int">
+        update shopping.goods_info
+        set isShelf = 0
+        where gId = #{gId}
+    </update>
+
+    <!--   上架-->
+    <update id="onShelf" parameterType="int">
+        update shopping.goods_info
+        set isShelf = 1
+        where gId = #{gId}
+    </update>
+</mapper>

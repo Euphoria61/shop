@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo.mapper.user.UserCollectionsMapper">
+
+    <!--查询该商品是否被该用户收藏-->
+
+    <select id="queryIsCollected" parameterType="Collections" resultType="Collections">
+        select *
+        from shopping.collections_info
+        where userId = #{userId}
+          and gId = #{gId}
+    </select>
+
+    <!--查询该用户所有收藏-->
+
+    <select id="selectAllCollected" resultType="Goods">
+        select *
+        from shopping.collections_info ci
+                 inner join shopping.goods_info gi
+                            on ci.gId = gi.gId
+        where ci.userId = #{userId}
+        limit #{pageNum},#{pageSize}
+    </select>
+
+    <!--    查询该用户总收藏数-->
+    <select id="getAllCollected" resultType="java.lang.Long">
+        select COUNT(*)
+        from shopping.collections_info ci
+                 inner join shopping.goods_info gi
+                            on ci.gId = gi.gId
+        where ci.userId = #{userId}
+    </select>
+
+    <!--    添加收藏-->
+    <insert id="addCollections" parameterType="Collections">
+        insert into shopping.collections_info(cId, userId, gId)
+        values (null, #{userId}, #{gId})
+    </insert>
+
+    <!--    删除收藏-->
+    <delete id="deleteCollections">
+        delete
+        from shopping.collections_info
+        where userId = #{userId}
+          and gId in (${ids})
+    </delete>
+</mapper>

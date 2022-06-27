@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo.mapper.user.GoodsOrderMapper">
+<!--库存减少-->
+ <update id="reduce" >
+    update shopping.goods_info set gStore = gStore-${sCount}   where gId =#{gId}
+ </update>
+
+<!--库存回滚-->
+ <update id="increase">
+  update shopping.goods_info set gStore = gStore+ (select sCount from shopping.goods_order_info where gOId =#{code})   where gId =#{gId}
+ </update>
+
+<!-- 检查库存-->
+ <select id="selectStore" resultType="int">
+  select gStore from shopping.goods_info where gId =#{gId}
+ </select>
+<!-- 我的订单-->
+<select id="selectMyOrder"  resultType="java.util.Map">
+ select * from shopping.goods_order_info o inner join shopping.goods_info i
+ on i.gId =o.gId
+ where userId =#{userId}
+limit #{pageNum},#{pageSize}
+</select>
+
+
+ <select id="getMyOrders" resultType="java.lang.Long">
+  select count(*) from shopping.goods_order_info where userId =#{userId}
+ </select>
+<!-- 添加订单-->
+ <insert id="addGoodsOrder" parameterType="GoodsOrder">
+  insert into shopping.goods_order_info(gOId,userId,gId,sCount,status,createDate)
+  values (#{gOId},#{userId},#{gId},#{sCount},#{status},#{createDate})
+ </insert>
+<!-- 更新状态-->
+<update id="updateStatus" >
+ update shopping.goods_order_info
+set status = #{status}
+where gOId =#{code}
+</update>
+
+ <insert id="addRate" >
+  insert into shopping.goods_rate(userId, gId, rate)
+  values (#{userId},#{gId},#{rate})
+ </insert>
+
+</mapper>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<body>
+<div>
+    <table id="table">
+        <tr>
+            <th></th>
+            <th>商品编号</th>
+            <th>商品名称</th>
+            <th>商品类别</th>
+            <th>原价</th>
+            <th>现价</th>
+            <th>库存</th>
+            <th>图片</th>
+            <th>是否上架</th>
+            <th>操作</th>
+        </tr>
+        <div class="goodsList" th:each="goods, itemStat : ${goodsList} ">
+            <tr>
+                <td th:text="${goods.gId}"></td>
+                <td th:text="${goods.gName}"></td>
+                <td th:text="${goods.gtName}"></td>
+                <td th:text="${goods.gPriceOld}"></td>
+                <td th:text="${goods.gPriceNew}"></td>
+                <td th:text="${goods.gStore}"></td>
+                <td><img height="250" th:src="@{/files/{pic}(pic=${goods.gPicture})}"
+                         width="250"/></td>
+                <td th:text="${goods.isShelf} !=0 ? '已上架':'未上架'"></td>
+
+                <td><a th:href="@{toUpdateGoods(gId=${goods.gId})}"
+                       th:text="修改">
+                </a>
+                    <a th:href="@{offShelf(gId=${goods.gId})}"
+                       th:text="${goods.isShelf} !=0 ? '上架':''">
+                    </a>
+                </td>
+            </tr>
+            </br>
+
+        </div>
+    </table>
+    <br><br>
+
+    <h3>添加商品</h3></br>
+
+    <form action="addGoods" enctype="multipart/form-data" method="post" modelAttribute="goods">
+        <table>
+            商品名称：<input class="text" placeholder="请输入商品名称" th:name="gName" type="text"><br>
+            商品类别： <select name="gtId">
+            <option th:each="goods_Type, itemStat : ${goodsTypeList}"
+                    th:text="${goods_Type.gtName}"
+                    th:value="${goods_Type.gtId}">
+            </option>
+        </select><br>
+            商品原价：<input class="text" placeholder="请输入商品原价" th:name="gPriceOld" type="text"><br>
+            商品现价：<input class="text" placeholder="请输入商品现价" th:name="gPriceNew" type="text"><br>
+            商品图片：<input th:name="image" type="file"/><br>
+            商品库存：<input class="text" placeholder="请输入商品库存" th:name="gStore" type="text"><br>
+
+            <input class="button" type="submit" value="添加"/><br>
+        </table>
+        <span id="msg" th:text="${param.msg}" type="text"></span>
+
+    </form>
+</div>
+
+
+</body>
+
+</html>

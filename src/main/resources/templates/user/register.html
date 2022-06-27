@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form action="register" method="post" name="userRegister">
+    邮&nbsp;&nbsp;件：<input class="text" id="userEmail" placeholder="请输入邮件名" th:name="userEmail" type="text"><br>
+    （有效的E-mail地址才能收到激活码，帐户在激活后才能享受网站服务。）<br>
+    密&nbsp;&nbsp;码：<input class="text" id="userPwd" placeholder="请输入密码" th:name="userPwd" type="password"><br>
+    （为了您帐户的安全，建议使用字符+数字等多种不同类型的组合，且长度大于5位。）<br>
+    确认密码：<input class="text" id="userPwd2" placeholder="请再次输入密码" th:name="userPwd2" type="password"><br>
+    验证码：<input class="textSize" name="code" type="text"/>
+    <img id="code" src="../validateCode"/>
+    <a href="javascript:refreshCode();">看不清，换一个！</a><br>
+    <input class="button" onclick="checkForm()" type="submit" value="注册"/>
+</form>
+<span id="msg" th:text="${msg}" type="text"></span>
+<script type="text/javascript">
+    function refreshCode() {
+        document.getElementById("code").src = "../validateCode?" + Math.random();
+    }
+
+    //表单验证
+    function checkForm() {
+        var pwd1 = document.userRegister.userPwd.value;
+        var pwd2 = document.userRegister.userPwd2.value;
+        if (pwd1 != pwd2) {
+            alert("两次密码不一致！");
+            return false;
+        }
+        document.userRegister.submit();
+        return true;
+    }
+</script>
+</body>
+
+</html>

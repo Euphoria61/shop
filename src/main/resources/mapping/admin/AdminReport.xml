@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo.mapper.admin.AdminReportMapper">
+    <!--        查询全部商品-->
+    <!--销售额按商品分类-->
+    <select id="selectSalesByTypeD" resultType="java.util.Map">
+        select DATE_FORMAT(createDate, '%Y-%m-%d') as day,i.gtId, t.gtName, sum(o.sCount * i.gPrice_new) sales
+        from shopping.goods_order_info o
+                 inner join shopping.goods_info i
+                            on i.gId = o.gId
+                 inner join shopping.goods_type t on i.gtId = t.gtId
+        where o.status >= 6
+         and DATE_FORMAT(createDate,  '%Y-%m') = #{selectDay}
+        group by day,i.gtId
+    </select>
+    <select id="selectSalesByTypeM" resultType="java.util.Map">
+        select DATE_FORMAT(createDate, '%Y-%m') as day,i.gtId, t.gtName, sum(o.sCount * i.gPrice_new) sales
+        from shopping.goods_order_info o
+        inner join shopping.goods_info i
+        on i.gId = o.gId
+        inner join shopping.goods_type t on i.gtId = t.gtId
+        where o.status >= 6
+       and DATE_FORMAT(createDate,  '%Y') = #{selectDay}
+      group by day,i.gtId
+    </select>
+
+
+    <!--销售额按商品-->
+    <select id="selectSalesByGoodsD" resultType="java.util.Map">
+        select DATE_FORMAT(createDate, '%Y-%m-%d') as day, sum(o.sCount * i.gPrice_new) sales
+        from shopping.goods_order_info o
+                 inner join shopping.goods_info i
+                            on i.gId = o.gId
+         where o.status >= 6
+        and DATE_FORMAT(createDate,  '%Y-%m') = #{selectDay}
+        and i.gId = #{gId}
+        group by day
+    </select>
+
+    <select id="selectSalesByGoodsM" resultType="java.util.Map">
+        select DATE_FORMAT(createDate, '%Y-%m') as day, sum(o.sCount * i.gPrice_new) sales
+        from shopping.goods_order_info o
+                 inner join shopping.goods_info i
+                            on i.gId = o.gId
+        where o.status >= 6
+          and DATE_FORMAT(createDate,  '%Y') = #{selectDay}
+          and i.gId = #{gId}
+        group by day
+    </select>
+    <!--销量按商品分类-->
+    <select id="selectSCByTypeD" resultType="java.util.Map">
+        select DATE_FORMAT(createDate, '%Y-%m-%d') as day,gtName, sum(o.sCount) sales
+        from shopping.goods_order_info o
+                 inner join shopping.goods_info i
+                            on i.gId = o.gId
+                 inner join shopping.goods_type t on i.gtId = t.gtId
+        where o.status >= 6
+
+        and DATE_FORMAT(createDate,  '%Y-%m') = #{selectDay}
+
+        group by day,gtName
+    </select>
+
+    <select id="selectSCByTypeM" resultType="java.util.Map">
+        select DATE_FORMAT(createDate, '%Y-%m') as day,gtName, sum(o.sCount) sales
+        from shopping.goods_order_info o
+                 inner join shopping.goods_info i
+                            on i.gId = o.gId
+                 inner join shopping.goods_type t on i.gtId = t.gtId
+        where o.status >= 6
+
+          and DATE_FORMAT(createDate,  '%Y') = #{selectDay}
+
+        group by day,gtName
+    </select>
+    <!--销量按商品-->
+    <select id="selectSCByGoodsD" resultType="java.util.Map">
+        select DATE_FORMAT(createDate, '%Y-%m-%d') as day, sum(o.sCount) sales
+        from shopping.goods_order_info o
+                 inner join shopping.goods_info i
+                            on i.gId = o.gId
+                 inner join shopping.goods_type t on i.gtId = t.gtId
+        where o.status >= 6
+          and o.gId=#{gId}
+        and DATE_FORMAT(createDate,  '%Y-%m') = #{selectDay}
+        group by day
+    </select>
+
+    <select id="selectSCByGoodsM" resultType="java.util.Map">
+        select DATE_FORMAT(createDate, '%Y-%m') as day, sum(o.sCount) sales
+        from shopping.goods_order_info o
+        inner join shopping.goods_info i
+        on i.gId = o.gId
+        inner join shopping.goods_type t on i.gtId = t.gtId
+        where o.status >= 6
+        and o.gId=#{gId}
+        and DATE_FORMAT(createDate,  '%Y') = #{selectDay}
+        group by day
+    </select>
+
+    <select id="selectStock" resultType="java.util.Map">
+    select  gtName,sum(gStore) sales
+    from shopping.goods_info i
+    inner join shopping.goods_type t on i.gtId = t.gtId
+    group by gtName
+    </select>
+</mapper>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo.mapper.admin.AdminOrderMapper">
+    <!--        查询全部商品-->
+    <!--过滤-->
+    <select id="selectOrder" resultType="java.util.Map">
+        select * from shopping.goods_order_info o inner join shopping.user_info i
+        on o.userId =i.user_id
+        inner join shopping.goods_info g on o.gId =g.gId
+        where 1=1
+        <if test="goodsOrder.userId != 0">
+            and o.userId =#{goodsOrder.userId}
+        </if>
+        <if test="goodsOrder.gId != 0">
+            and o.gId =#{goodsOrder.gId}
+        </if>
+        <if test="goodsOrder.status != 0">
+            and o.status =#{goodsOrder.status}
+        </if>
+        <if test="goodsOrder.createDate != null">
+            and o.createDate between #{createDate[0],javaType=string} and #{createDate[1],javaType=string}
+        </if>
+        limit #{pageNum},#{pageSize}
+    </select>
+
+
+    <select id="getOrderCount" resultType="java.lang.Long">
+        select count(*) from shopping.goods_order_info o inner join shopping.user_info i
+        on o.userId =i.user_id
+        inner join shopping.goods_info g on o.gId =g.gId
+        where 1=1
+        <if test="goodsOrder.userId != 0">
+            and o.userId =#{goodsOrder.userId}
+        </if>
+        <if test="goodsOrder.gId != 0">
+            and o.gId =#{goodsOrder.gId}
+        </if>
+        <if test="goodsOrder.status != 0">
+            and o.status =#{goodsOrder.status}
+        </if>
+        <if test="goodsOrder.createDate != null">
+            and o.createDate between #{createDate[0],javaType=string} and  #{createDate[1],javaType=string}
+        </if>
+    </select>
+
+    <update id="updateOrderStatus">
+        update shopping.goods_order_info
+        set status = #{status}
+        where gOId in (${codes})
+    </update>
+
+</mapper>

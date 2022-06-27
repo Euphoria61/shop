@@ -1,0 +1,79 @@
+server:
+  port: 9090
+  servlet:
+      encoding:
+        charset: UTF-8
+        force: true
+        enabled: true
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+      show-sql: true
+  data:
+    mongodb:
+
+      uri: mongodb://192.168.154.100:27017/springboot
+      database: springboot
+  datasource:
+    host: mysql
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 123456
+    url: jdbc:mysql://${spring.datasource.host}:3306/shopping?characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+
+  thymeleaf:
+    cache: false
+    encoding: UTF-8
+    servlet:
+      content-type: text/html
+    prefix: classpath:/templates/
+    suffix: .html
+    check-template-location: true
+
+  servlet:
+    multipart:
+      max-request-size: 200MB
+      max-file-size: 200MB
+
+  messages:
+    cache-duration: 3600
+    encoding: UTF-8
+    fallback-to-system-locale: true
+    basename: i18n/messages
+
+  redis:
+    database: 0
+    port: 6379
+    host: redis
+    lettuce:
+      pool:
+        #最大可用连接数（默认为8，负数表示无限）
+        max-active: 8
+        # 最大空闲连接数（默认为8，负数表示无限）
+        max-idle: 8
+         # 最小空闲连接数（默认为0，该值只有为正数才有用）
+        min-idle: 0
+       # 从连接池中获取连接最大等待时间（默认为-1，单位为毫秒，负数表示无限）
+        max-wait: -1
+
+    timeout: 5000
+
+logging:
+  level:
+    root: info
+    web: debug
+
+  file:
+    name: logs/shop.log
+
+mybatis:
+  mapper-locations: classpath:mapping/**/*.xml
+  type-aliases-package: com.example.demo.pojo
+  configuration:
+    map-underscore-to-camel-case: true
+    use-column-label: true
+
+
+

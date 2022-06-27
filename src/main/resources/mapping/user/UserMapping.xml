@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo.mapper.user.UserMapper">
+    <!-- 邮件查询用户密码 -->
+
+    <select id="queryByEmail" resultType="User" parameterType="String">
+        select *
+        from shopping.user_info
+
+        where user_email LIKE #{email}
+    </select>
+    <!--    插入新用户-->
+    <insert id="insertUser" parameterType="String">
+
+        insert into shopping.user_info(user_id, user_email, user_pwd)
+
+
+        values (null, #{email}, #{pwd})
+    </insert>
+</mapper>

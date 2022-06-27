@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+
+    </style>
+</head>
+<body>
+<form action="updateGoods" enctype="multipart/form-data" method="post" modelAttribute="goods">
+    <table>
+        <input th:name="gId" th:value="${goods.gId}" type="hidden"/><br>
+        <input th:name="isShelf" th:value="${goods.isShelf}" type="hidden"/><br>
+        商品名称：<input class="text" placeholder="请输入商品名称" th:name="gName" th:value="${goods.gName}" type="text"><br>
+        商品类别： <select name="gtId" th:value="${goods.gtId}">
+        <option th:each="goods, itemStat : ${goodsTypeList}"
+                th:text="${goods.gtName}"
+                th:value="${goods.gId}">
+        </option>
+    </select><br>
+        商品图片：<input th:name="image" th:value="${goods.gPicture}" type="file"/><br>
+        商品原价：<input class="text" th:name="gPriceOld" th:value="${goods.gPriceOld}" type="text"><br>
+        商品现价：<input class="text" th:name="gPriceNew" th:value="${goods.gPriceNew}" type="text"><br>
+        商品库存：<input class="text" th:name="gStore" th:value="${goods.gStore}" type="text"><br>
+
+        <input class="button" type="submit" value="修改"/><br>
+    </table>
+    <span id="msg" th:text="${param.msg}" type="text"></span>
+</form>
+</body>
+</html>

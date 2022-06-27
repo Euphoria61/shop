@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo.mapper.user.ShoppingCartMapper">
+
+    <!--查询所有购物车商品-->
+    <select id="selectCartGoods" resultType="Goods">
+        select *
+        from shopping.shoppingcart_info si
+                 inner join shopping.goods_info gi
+                            on si.gId = gi.gId
+        where userId = #{userId}
+    </select>
+    <!--    添加购物车商品-->
+    <insert id="addCartGoods" parameterType="ShoppingCart">
+        insert into shopping.shoppingcart_info(scId, userId, gId, sCount)
+        values (null, #{userId}, #{gId}, #{sCount})
+    </insert>
+
+    <!--    删除购物车商品(可批量)-->
+    <delete id="deleteCartGoods">
+        delete
+        from shopping.shoppingcart_info
+        where userId = #{userId}
+          and gId in (${ids})
+    </delete>
+    <!--    修改购物车商品数量-->
+    <update id="updateGoodsCount">
+        update shopping.shoppingcart_info
+        set sCount = #{sCount}
+        where gId = #{gId}
+          and userId = #{userId}
+    </update>
+    <!--    购物车数量-->
+    <select id="getAllCartGoods" resultType="java.lang.Long">
+        select count(scId)
+        from shopping.shoppingcart_info
+        where userId = #{userId}
+    </select>
+</mapper>

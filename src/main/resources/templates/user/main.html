@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+欢迎您，<span th:text="${session.email}" type="text"></span>
+登录成功</br>
+<a href="exit">安全退出</a>
+</body>
+</html>
