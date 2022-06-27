@@ -1,11 +1,11 @@
 # 电子商务系统
-基于springboot框架实现<br>
-前端使用vue+ ElementPlus+ vue-Router+ echarts来渲染页面<br>
-在订单处理方面，采用redis+mysql 来实现订单的创建及销毁<br>
-在模拟付款方面，采用Alipay接口实现<br>
-在评价方面，采用mongodb来存储评价<br>
-在推荐商品方面，采用mahout中基于物品的协同过滤算法<br>
-
+1.基于springboot框架实现<br>
+2.前端使用vue+ ElementPlus+ vue-Router+ echarts来渲染页面<br>
+3.在订单处理方面，采用redis+mysql 来实现订单的创建及销毁<br>
+4.在模拟付款方面，采用Alipay接口实现<br>
+5.在评价方面，采用mongodb来存储评价<br>
+6.在推荐商品方面，采用mahout中基于物品的协同过滤算法<br>
+7.使用docker compose 部署在Linux上<br>
 
 用户：<br>
 1.可以浏览商品，在库存允许的情况下购买自己想要商品。<br>
